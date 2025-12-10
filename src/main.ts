@@ -5,27 +5,23 @@ import * as skaffold from "./skaffold";
 async function run(): Promise<void> {
   const requestedVersion = core.getInput("version");
 
-  core.info(`Requested version "${requestedVersion}"`);
+  const token = core.getInput("github-token");
 
-  const version = await skaffold.getVersion(requestedVersion);
+  core.info(`Requested version of Skaffold is "${requestedVersion}"`);
+
+  const version = await skaffold.getVersion(requestedVersion, token);
 
   core.info(`Using version ${version}`);
 
   core.info(`Fetching binary...`);
 
-  const binary = await skaffold.fetchBinary(version);
-
-  core.info(`Verifying binary...`);
-
-  if (!(await skaffold.verifyBinary(binary))) {
-    throw Error("Skaffold binary did not match its checksum");
-  }
+  const binaryPath = await skaffold.fetch(version);
 
   core.info(`Installing binary...`);
 
-  await skaffold.installBinary(binary);
+  await skaffold.install(binaryPath);
 
-  core.info(`Skaffold has been installed`);
+  core.info(`Skaffold is ready to use`);
 }
 
 run().catch(core.setFailed);

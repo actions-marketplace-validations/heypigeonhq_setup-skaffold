@@ -1,7 +1,11 @@
 name: ci
 
 on:
-    - push
+    pull_request:
+        types:
+            - opened
+
+    push:
 
 jobs:
     check-commit:
@@ -10,19 +14,19 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - uses: actions/checkout@v3.6.0
+            - uses: actions/checkout@v4.2.2
 
               with:
                   fetch-depth: 0
 
-            - uses: actions/cache@v3.3.1
+            - uses: actions/cache@v4.2.4
 
               with:
                   key: ${{ github.job }}-${{ hashFiles('package-lock.json') }}
 
                   path: node_modules/
 
-            - uses: actions/setup-node@v3.8.1
+            - uses: actions/setup-node@v4.4.0
 
               with:
                   node-version: 20
@@ -41,16 +45,16 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - uses: actions/checkout@v3.6.0
+            - uses: actions/checkout@v4.2.2
 
-            - uses: actions/cache@v3.3.1
+            - uses: actions/cache@v4.2.4
 
               with:
                   key: ${{ github.job }}-${{ hashFiles('package-lock.json') }}
 
                   path: node_modules/
 
-            - uses: actions/setup-node@v3.8.1
+            - uses: actions/setup-node@v4.4.0
 
               with:
                   node-version: 20
@@ -69,16 +73,16 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - uses: actions/checkout@v3.6.0
+            - uses: actions/checkout@v4.2.2
 
-            - uses: actions/cache@v3.3.1
+            - uses: actions/cache@v4.2.4
 
               with:
                   key: ${{ github.job }}-${{ hashFiles('package-lock.json') }}
 
                   path: node_modules/
 
-            - uses: actions/setup-node@v3.8.1
+            - uses: actions/setup-node@v4.4.0
 
               with:
                   node-version: 20
@@ -93,7 +97,7 @@ jobs:
 
             - if: ${{ !cancelled() }}
 
-              uses: actions/upload-artifact@v3.1.2
+              uses: actions/upload-artifact@v4.6.2
 
               with:
                   name: act.log
@@ -106,16 +110,16 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - uses: actions/checkout@v3.6.0
+            - uses: actions/checkout@v4.2.2
 
-            - uses: actions/cache@v3.3.1
+            - uses: actions/cache@v4.2.4
 
               with:
                   key: ${{ github.job }}-${{ hashFiles('package-lock.json') }}
 
                   path: node_modules/
 
-            - uses: actions/setup-node@v3.8.1
+            - uses: actions/setup-node@v4.4.0
 
               with:
                   node-version: 20
@@ -147,9 +151,7 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - uses: google-github-actions/release-please-action@v3.7.11
+            - uses: google-github-actions/release-please-action@v4.1.1
 
               with:
-                  package-name: setup-skaffold-action
-
                   release-type: node
